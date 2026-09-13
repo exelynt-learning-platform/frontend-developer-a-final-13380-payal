@@ -1,0 +1,24 @@
+<div class="search-box">
+
+  <mat-icon class="search-icon">search</mat-icon>
+
+  <input
+    type="text"
+    placeholder="Search employee by ID"
+    [(ngModel)]="searchId"
+    (keyup.enter)="onSearch()"
+    (input)="onInputChange()"
+  />
+
+  @if (searchId) {
+    <button
+      type="button"
+      class="clear-button"
+      (click)="onClear()">
+
+      <mat-icon>close</mat-icon>
+
+    </button>
+  }
+
+</div>

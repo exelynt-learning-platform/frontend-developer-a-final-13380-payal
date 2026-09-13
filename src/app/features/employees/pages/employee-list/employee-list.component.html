@@ -1,0 +1,112 @@
+<div class="employee-page">
+
+  <!-- Header -->
+  <header class="page-header fw-bold fst-italic text-center">
+
+    <div>
+      <h1>Employee Management</h1>
+    </div>
+
+  </header>
+
+
+  <!-- Search -->
+  <section class="search-section mb-2">
+
+    <app-employee-search
+      (search)="onSearch($event)"
+      (clear)="onClearSearch()">
+    </app-employee-search>
+
+  </section>
+
+  <!-- Loading -->
+  @if (loading$ | async) {
+
+    <div class="state">
+      Loading employees...
+    </div>
+
+  }
+  @else {
+    @if (error$ | async; as error) {
+      @if (error) {
+        <div class="state error">
+          {{ error }}
+        </div>
+      }
+    }
+
+    @if (searchError$ | async; as searchError) {
+      @if (searchError) {
+        <div class="state error">
+          {{ searchError }}
+        </div>
+      }
+    }
+
+    <!-- Employee Table -->
+    @if (displayEmployees$ | async; as employees) {
+
+      @if (employees.length > 0) {
+        <app-employee-table
+          [employees]="employees"
+          (edit)="editEmployee($event)"
+          (delete)="deleteEmployee($event)">
+        </app-employee-table>
+      } @else {
+          @if (!(searchError$ | async)) {
+            <div class="state">
+              No employees found.
+            </div>
+
+          }
+        }
+    }
+  }
+
+  <!-- Add Employee Button -->
+  <div class="add-employee-container">
+
+    <button
+      type="button"
+      class="btn btn-primary add-employee-btn"
+      (click)="addEmployee()">
+
+      <mat-icon>person_add</mat-icon>
+        Add Employee
+    </button>
+
+  </div>
+
+</div>
+
+<!-- Employee Form Popup -->
+
+@if (showForm) {
+
+  <div
+    class="employee-form-overlay"
+    (click)="closeForm()">
+
+    <div
+      class="employee-form-popup"
+      (click)="$event.stopPropagation()">
+      <button
+        type="button"
+        class="popup-close"
+        (click)="closeForm()"
+        aria-label="Close">
+          <mat-icon>close</mat-icon>
+      </button>
+
+      <app-employee-form
+        [employee]="selectedEmployee"
+        (formSubmit)="onFormSubmit($event)"
+        (cancel)="closeForm()">
+      </app-employee-form>
+
+    </div>
+  </div>
+
+}

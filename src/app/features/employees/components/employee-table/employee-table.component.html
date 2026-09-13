@@ -1,0 +1,105 @@
+<div class="table-container">
+
+  <table>
+
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Country</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      @for (employee of employees; track employee.id) {
+
+        <tr>
+
+          <td class="employee-name">
+            {{ employee.name }}
+          </td>
+
+          <td>
+            {{ employee.email }}
+          </td>
+
+          <td>
+            {{ employee.mobile }}
+          </td>
+
+          <td>
+            {{ employee.country }}
+          </td>
+
+          <td class="actions">
+
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Edit"
+              (click)="editEmployee(employee)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Delete"
+              (click)="deleteEmployee(employee)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
+@if (showDeletePopup) {
+
+  <div class="popup-overlay" (click)="cancelDelete()">
+
+    <div class="delete-popup" (click)="$event.stopPropagation()">
+
+      <div class="popup-icon">
+        <mat-icon>delete_outline</mat-icon>
+      </div>
+
+      <h2>Delete Employee?</h2>
+
+      <p>
+        Are you sure you want to delete
+        <strong>{{ selectedEmployee?.name }}</strong>?
+      </p>
+
+      <div class="popup-actions">
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="cancelDelete()">
+            Cancel
+        </button>
+
+        <button
+          mat-flat-button
+          class="delete-button"
+          type="button"
+          (click)="confirmDelete()">
+            Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
